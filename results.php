@@ -63,7 +63,13 @@ else if ($request == "Search"){
     echo "</table>";
 
     if($request == "Update"){
-        $update = "UPDATE Library . FriendsAndFamily ";
+        $update = "UPDATE Library . FriendsAndFamily SET FirstName='$firstName'";
+
+        $newData = $con->query($update);
+    }
+    if(!$newData){
+        echo "Somthing went wrong with the update";
+        echo $update;
     }
     mysqli_close($con);
 }
