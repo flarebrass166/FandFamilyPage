@@ -20,8 +20,9 @@ $relationship = $_POST['Relationship'];
 $sex = $_POST['Sex'];
 $request = $_POST['Request'];
 
-if($request == "Create"){
-  $insert = "INSERT INTO Library . FriendsAndFamily (FirstName, LastName, PhoneNumber, Address, City, State, 
+switch ($request){
+    case "Create":
+        $insert = "INSERT INTO Library . FriendsAndFamily (FirstName, LastName, PhoneNumber, Address, City, State, 
               Zip, Birthdate, UserName, Password, Sex, Relationship) VALUES ('" . mysql_fix_string($con, $firstName) . "',
               '" . mysql_fix_string($con, $lastName) . "',  '" .  mysql_fix_string($con, $phone) . "',
               '" . mysql_fix_string($con, $address) . "',  '" .  mysql_fix_string($con, $city) .  "',
@@ -30,7 +31,7 @@ if($request == "Create"){
               '" . hash("ripemd128", $_POST['Password']) . "', '" . mysql_fix_string($con, $sex) . "',
               '" . mysql_fix_string($con, $relationship) . "')";
 
-    $result = $con->query($insert);
+        $result = $con->query($insert);
 
         if (!$result){
             echo "Something went wrong while creating new record, please try again";
@@ -38,38 +39,46 @@ if($request == "Create"){
         }else{
             echo "Record successfully registered.";
         }
-}
-else if ($request == "Search"){
-    $select = "SELECT FirstName, LastName, PhoneNumber, Address, City, State, 
+          break;
+
+    case "Search":
+        $select = "SELECT FirstName, LastName, PhoneNumber, Address, City, State, 
               Zip, Birthdate, UserName, Password, Sex, Relationship FROM Library . FriendsAndFamily WHERE  FirstName = '$firstName' and LastName = '$lastName'";
 
-    $return = $con->query($select);
+        $return = $con->query($select);
 
-    if(!$return){
-        echo "Something went wrong while searching, please try again";
-        echo $select;
-    }
+        if(!$return){
+            echo "Something went wrong while searching, please try again";
+            echo $select;
+        }
 
-    echo "<table><th>First Name</th><th>Last Name</th><th>City</th><th>State</th><th>Zip</th><th>Phone Number</th><th>Sex</th><th>Birth date</th><th>Relationship</th>";
-    while ($row = $return->fetch_assoc()) {
-        echo "<tr><td> First Name: " . $row['FirstName']
-            . "</td><td> Last Name: " . $row['LastName']
-            . "</td><td> City: " . $row['City']
-            . "<tr><td> Zip: " . $row['Zip']
-            . "</td><td> Sex: " . $row['Sex']
-            . "</td><td> Birth date: " . $row['Birthdate']
-            . "</td><td> Relationship: " . $row['Relationship'] . "</td></tr>";
-    }
-    echo "</table>";
+        echo "<table><th>First Name</th><th>Last Name</th><th>City</th><th>State</th><th>Zip</th><th>Phone Number</th><th>Sex</th><th>Birth date</th><th>Relationship</th>";
+        while ($row = $return->fetch_assoc()) {
+            echo "<tr><td> First Name: " . $row['FirstName']
+                . "</td><td> Last Name: " . $row['LastName']
+                . "</td><td> City: " . $row['City']
+                . "<tr><td> Zip: " . $row['Zip']
+                . "</td><td> Sex: " . $row['Sex']
+                . "</td><td> Birth date: " . $row['Birthdate']
+                . "</td><td> Relationship: " . $row['Relationship'] . "</td></tr>";
+        }
+        echo "</table>";
+        break;
 
-    if($request == "Update"){
-        $update = "UPDATE Library . FriendsAndFamily SET FirstName='$firstName'";
+    case "Update":
+        if($request == "Update"){
+            $update = "UPDATE FriendsAndFamily  SET FirstName='$firstName' WHERE  UserName = '$userName'";
+            $newData = $con->query($update);
+            echo "Update Compete";
+        }
+        if(!$newData){
+            echo "Something went wrong with the update";
+            echo $update;
+        }
+        break;
 
-        $newData = $con->query($update);
-    }
-    if(!$newData){
-        echo "Somthing went wrong with the update";
-        echo $update;
-    }
-    mysqli_close($con);
 }
+mysqli_close($con);
+
+
+
