@@ -9,7 +9,7 @@ $dbname = "Library";
 $con = new mysqli($host, $user, $password, $dbname)
 or die('Could not connect to the database server' . mysqli_connect_error());
 
-echo "<h2>Conneced to Database Server Successfully</h2>";
+echo "<h2>Results</h2>";
 
 function mysql_fix_string($conn, $string){
 
