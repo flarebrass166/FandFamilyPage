@@ -37,13 +37,14 @@ switch ($request){
             echo "Something went wrong while creating new record, please try again";
             echo $insert;
         }else{
-            $select = "SELECT FirstName, LastName, PhoneNumber, Address, City, State, 
+            $select = "SELECT UserName, FirstName, LastName, PhoneNumber, Address, City, State, 
               Zip, Birthdate, UserName, Password, Sex, Relationship FROM Library . FriendsAndFamily WHERE  FirstName = '$firstName' and LastName = '$lastName'";
 
             $return = $con->query($select);
             echo "Record successfully registered.";
             while ($row = $return->fetch_assoc()) {
-                echo "<h3>First Name: "  . $row['FirstName']
+                echo "<h3>User Name: "  . $row['UserName']
+                    . "<h3>First Name: "  . $row['FirstName']
                     . "</br></h3><h3> Last Name: " . $row['LastName']
                     . "</br></h3><h3> Address: "  . $row['Address']
                     . "</br></h3><h3> City: " . $row['City']
@@ -55,7 +56,7 @@ switch ($request){
         }
           break;
     case "Search":
-        $select = "SELECT FirstName, LastName, PhoneNumber, Address, City, State, 
+        $select = "SELECT  FirstName, LastName, PhoneNumber, Address, City, State, 
               Zip, Birthdate, UserName, Password, Sex, Relationship FROM Library . FriendsAndFamily WHERE  FirstName = '$firstName' and LastName = '$lastName'";
 
         $return = $con->query($select);
@@ -64,6 +65,7 @@ switch ($request){
             echo "Something went wrong while searching, please try again";
             echo $select;
         }
+        echo "Record found";
         while ($row = $return->fetch_assoc()) {
             echo "<h3>First Name: "  . $row['FirstName']
                 . "</br></h3><h3> Last Name: " . $row['LastName']
